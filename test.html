@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .textWrapper {
+            height: fit-content;
+            min-width: 3rem;
+            width: fit-content;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.25ch;
+            position: relative;
+            z-index: 0;
+            color: rgba(231, 194, 194, 0.839);
+        }
+
+        .invertbox {
+            position: absolute;
+            height: 100%;
+            aspect-ratio: 1/1;
+            left: 0;
+            top: 0;
+            border-radius: 20%;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: invert(100%);
+            animation: move 2s ease-in-out infinite;
+        }
+
+        @keyframes move {
+            50% {
+                left: calc(100% - 3rem);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="textWrapper show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex
+        align-items-center justify-content-center" role="status">
+        <p class="text">Loading...</p>
+        <div class="invertbox"></div>
+    </div>
+
+</body>
+
+</html>

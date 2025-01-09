@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .double-underline {
+            position: relative;
+            display: inline-block;
+            color: #000;
+            /* Text color */
+        }
+
+        .double-underline::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            /* Thickness of the underline */
+            bottom: -4px;
+            /* Position of the underline */
+            left: 0;
+            background: #fb8500;
+            border-radius: 50%;
+            /* First underline color */
+            animation: underlineAnimation 1.5s ease-out forwards;
+        }
+
+        .double-underline::before {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            /* Thickness of the second underline */
+            bottom: -8px;
+            /* Position of the second underline */
+            left: 0;
+            background: #ff5700;
+            border-radius: 50%;
+            /* Second underline color */
+            animation: underlineAnimation 1.5s ease-out 0.5s forwards;
+            /* Delayed animation */
+        }
+
+        @keyframes underlineAnimation {
+            100% {
+                width: 100%;
+                /* Expand the underline to full width */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="mb-4">
+        Welcome to <span class="double-underline">Bookify</span>
+    </h1>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
