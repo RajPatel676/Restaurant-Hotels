@@ -1,73 +1,65 @@
-// **************************************************************************************************
-
 
 
 
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
-const multer = require('multer');
+const cors = require('cors');
 const path = require('path');
 
-// Create an instance of express
 const app = express();
-// const upload = multer();
+const PORT = 3000;
 
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
+// Middleware
+app.use(bodyParser.json());
+app.use(cors());
+app.use(express.static('public')); // Serve the HTML file
+app.use(express.static('css'));
 
-
-
-app.get('/Table_Booking', (req, res) => {
-    res.sendFile(path.join(__dirname, '../contact.html'));  // Serve the HTML file
+// Serve index.html on the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public')); // Serve index.html from the public folder
 });
 
-// Email sender configuration
+// Nodemailer transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Use your email service (e.g., Gmail, Outlook)
+    service: 'gmail', // Use your email service provider
     auth: {
         user: 'bookify676@gmail.com', // Replace with your email
-        pass: 'ggoc jsgv qrva qxps', // Replace with your email password or app password
+        pass: 'utik aaed zdvx xrhi', // Replace with your email password or app password
     },
 });
 
-// Function to send email
-function sendEmail(userEmail, subject, message) {
+// Email sending route
+app.post('/send-email', async (req, res) => {
+    const { sender, subject, message, name } = req.body;
+
+    if (!sender || !subject || !message || !name) {
+        return res.status(400).json({ success: false, error: 'All fields are required.' });
+    }
+
     const mailOptions = {
-        from: 'rp2737188@gmail.com',
-        to: 'bookify676@gmail.com',
-        subject: subject,
-        text: `User Email: ${userEmail}\n\nMessage: ${message}`,
+        from: sender, // The sender's email provided by the user
+        to: 'bookify676@gmail.com', // Replace with your email (recipient)
+        subject: `from ${name} (${sender}): ${subject}`, // Include sender's email in the subject
+        text: `Message:-${message}`, // User's message
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-        } else {
-            console.log('Email sent successfully:', info.response);
-        }
-    });
-}
-
-// Serve static files (e.g., HTML)
-app.use(express.static(path.join(__dirname, '..')));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-
-
-// Handle form submission
-app.post('/send-email', (req, res) => {
-
-    const { name, email, subject, message } = req.body;
-    console.log('Received form data:', { name, email, subject, message });
-    sendEmail(email, subject, message);
-    res.send('Message sent successfully!');
-
+    try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
 });
 
 // Start the server
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
+
+// Export Express app for serverless function
+module.exports = app;
+
