@@ -265,7 +265,8 @@
 
                     const result = await response.json();
                     if (result.success) {
-                        responseDiv.textContent = 'Email sent successfully!';
+                        // responseDiv.textContent = 'Email sent successfully!';
+                        document.getElementById('response').style.display = 'block';
                         form.reset();
                     } else {
                         responseDiv.textContent = 'Failed to send email: ' + result.error;
