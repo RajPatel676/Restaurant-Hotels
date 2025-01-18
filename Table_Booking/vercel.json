@@ -3,18 +3,13 @@
     "builds": [
       {
         "src": "js/server.js",
-        "use": "@vercel/node"   
+        "use": "@vercel/node"
       }
     ],
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "/public/index.html"    
-      },
-      {
-        "src": "/send-email",   
-        "dest": "/js/server.js"
+        "dest": "js/server.js"
       }
     ]
   }
-  
